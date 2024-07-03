@@ -1,7 +1,3 @@
-<script setup>
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
 <template>
   <div class="w-screen h-screen flex">
     <!-- responsive button -->
@@ -57,7 +53,8 @@ import TheWelcome from '../components/TheWelcome.vue'
     </div>
 
     <div class="w-full h-full bg-gray-400">
-      This is a home page
+      This is a thread page
     </div>
   </div>
 </template>
+
