@@ -30,8 +30,7 @@
           </ul>
       </div>
     </aside> -->
-    <div class="w-[400px] h-full bg-gray-200">
-      <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+    <div class="w-[400px] h-full bg-gray-200 px-3 py-4 overflow-y-auto">
           <ul class="space-y-2 font-medium">
             <image src=""></image>
             <li>
@@ -49,10 +48,9 @@
                 </RouterLink>
             </li>
           </ul>
-      </div>
     </div>
 
-    <div class="w-full h-full bg-gray-400">
+    <div class="w-full h-full bg-gray-100">
       This is a thread page
     </div>
   </div>
