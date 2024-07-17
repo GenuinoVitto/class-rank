@@ -52,7 +52,7 @@ export default {
       }
     },
     signUp() {
-      console.log('Redirect to sign-up page');
+      this.$router.push('/register');
     }
   }
 }
