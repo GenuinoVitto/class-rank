@@ -6,12 +6,10 @@
           <h5 class="card-title text-center">Welcome to ClassRank</h5>
           <form @submit.prevent="login">
             <div class="mb-3">
-              <label for="email" class="form-label">DLSU email</label>
-              <input type="email" class="form-control" id="email" v-model="email" required>
+              <input type="email" class="form-control" placeholder="DLSU Email" id="email" v-model="email" required>
             </div>
             <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password" v-model="password" required>
+              <input type="password" class="form-control" id="password" placeholder="Password" v-model="password" required>
             </div>
             <div class="d-grid gap-2">
               <button type="submit" class="btn btn-success">Log in</button>
