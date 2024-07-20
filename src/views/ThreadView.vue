@@ -22,12 +22,12 @@
     <div class="w-full h-full bg-gray-100 p-4">
       <div class="flex justify-between items-center mb-4">
         <h1 class="text-xl font-bold">Threads</h1>
-        <button @click="showCreateForm = !showCreateForm" class="bg-green-500 text-white px-4 py-2 rounded">Create</button>
+        <button @click="showCreateForm = !showCreateForm" class="bg-green-500 text-white px-4 py-2 rounded create-button">Create</button>
       </div>
       <div v-if="showCreateForm" class="bg-white p-4 rounded shadow mb-4">
         <input v-model="newThread.name" type="text" placeholder="Name" class="block w-full mb-2 p-2 border rounded">
         <textarea v-model="newThread.content" placeholder="Content" class="block w-full mb-2 p-2 border rounded"></textarea>
-        <button @click="addThread" class="bg-blue-500 text-white px-4 py-2 rounded">Add Thread</button>
+        <button @click="addThread" class="bg-blue-500 text-white px-4 py-2 rounded add-thread-button">Add Thread</button>
       </div>
       <div class="space-y-4">
         <div v-for="(thread, index) in threads" :key="index" class="bg-white p-4 rounded shadow">
@@ -37,7 +37,7 @@
               <h2 class="font-semibold">{{ thread.name }}</h2>
               <p class="text-gray-500">{{ thread.time }}</p>
             </div>
-            <button @click="deleteThread(index)" class="text-red-500 hover:text-red-700 bg-red-100 px-2 py-1 rounded">Delete</button>
+            <button @click="deleteThread(index)" class="text-red-500 hover:text-red-700 bg-red-100 px-2 py-1 rounded delete-button">Delete</button>
           </div>
           <p class="mt-2">{{ thread.content }}</p>
         </div>
@@ -55,10 +55,7 @@ export default {
         name: '',
         content: ''
       },
-      threads: [
-        { name: 'Name here', time: '8 hours ago', content: 'This is the best creative talent.' },
-        { name: 'Name here', time: '8 hours ago', content: 'This is the best creative talent.' }
-      ]
+      threads: []
     }
   },
   methods: {
@@ -84,7 +81,13 @@ export default {
 button {
   transition: background-color 0.3s;
 }
-button:hover {
-  background-color: #ff4d4d; /* Darker red for delete button on hover */
+.create-button:hover {
+  background-color: #3b7a33; 
+}
+.add-thread-button:hover {
+  background-color: #3b5998; 
+}
+.delete-button:hover {
+  background-color: #ff1a1a; 
 }
 </style>
