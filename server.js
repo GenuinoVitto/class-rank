@@ -2,16 +2,19 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
 
 // MongoDB connection
-const uri = 'mongodb://localhost:27017/classrank'; // database name is classrank
-mongoose.connect(uri);
+const uri = process.env.MONGO_URI;
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
 
 const connection = mongoose.connection;
 connection.once('open', () => {
@@ -20,13 +23,13 @@ connection.once('open', () => {
 
 // Define User schema and model
 const userSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    role: { type: String, required: true }
-  });
-  
-  const User = mongoose.model('User', userSchema, 'users'); // collection name is users
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, required: true }
+});
+
+const User = mongoose.model('User', userSchema, 'users');
 
 // Routes
 app.post('/register', async (req, res) => {
@@ -37,7 +40,11 @@ app.post('/register', async (req, res) => {
     await newUser.save();
     res.status(201).send({ message: 'User registered successfully', user: newUser });
   } catch (error) {
-    res.status(400).send({ message: 'Error registering user', error });
+    let message = 'Error registering user';
+    if (error.code === 11000) { // Duplicate key error
+      message = 'Email already registered';
+    }
+    res.status(400).send({ message, error });
   }
 });
 
