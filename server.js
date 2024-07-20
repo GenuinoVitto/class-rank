@@ -14,7 +14,7 @@ app.use(express.json());
 
 // MongoDB connection
 const uri = process.env.MONGO_URI;
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+mongoose.connect(uri);
 
 const connection = mongoose.connection;
 connection.once('open', () => {
@@ -38,7 +38,6 @@ app.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ name, email, password: hashedPassword, role });
     await newUser.save();
-    res.status(201).send({ message: 'User registered successfully', user: newUser });
   } catch (error) {
     let message = 'Error registering user';
     if (error.code === 11000) { // Duplicate key error

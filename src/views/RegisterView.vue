@@ -28,6 +28,7 @@
               <button type="submit" class="btn btn-success">Register</button>
             </div>
           </form>
+          <div v-if="successMessage" class="text-success mt-2">{{ successMessage }}</div>
           <div v-if="errorMessage" class="text-danger mt-2">{{ errorMessage }}</div>
         </div>
         <div class="card-footer text-muted text-center">
@@ -48,13 +49,16 @@ export default {
       email: '',
       password: '',
       role: 'student',
-      errorMessage: ''
+      errorMessage: '',
+      successMessage: ''
     }
-  },
+},
+
   methods: {
     async register() {
       if (!this.validateEmail(this.email)) {
         this.errorMessage = 'Please enter a valid DLSU email address.';
+        this.successMessage = ''; // Clear success message if there's an error
         return;
       }
       try {
@@ -64,13 +68,15 @@ export default {
           password: this.password,
           role: this.role
         });
-        console.log('Registration successful:', response.data);
-        this.errorMessage = '';
+        this.successMessage = 'Registration successful!'; // Set success message
+        this.errorMessage = ''; // Clear any previous error messages
       } catch (error) {
         console.error('Registration failed:', error.response.data);
         this.errorMessage = error.response.data.message || 'An error occurred during registration.';
+        this.successMessage = ''; // Clear success message if there's an error
       }
     },
+
     redirectToLogin() {
       this.$router.push('/login');
     },
@@ -84,6 +90,9 @@ export default {
 <style scoped>
 .text-danger {
   color: #dc3545;
+}
+.text-success {
+  color: #28a745;
 }
 .container::before {
   content: '';
