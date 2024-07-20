@@ -26,7 +26,8 @@
       </div>
       <div v-if="showCreateForm" class="bg-white p-4 rounded shadow mb-4">
         <input v-model="newThread.name" type="text" placeholder="Name" class="block w-full mb-2 p-2 border rounded">
-        <textarea v-model="newThread.content" placeholder="Content" class="block w-full mb-2 p-2 border rounded" maxlength="500" style="resize: none;"></textarea>
+        <textarea v-model="newThread.content" placeholder="Content" class="block w-full mb-2 p-2 border rounded" maxlength="1000" style="resize: none;"></textarea>
+        <p class="text-right text-gray-500">{{ remainingCharacters }} characters left</p>
         <button @click="addThread" class="bg-blue-500 text-white px-4 py-2 rounded add-thread-button">Add Class</button>
         <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
       </div>
@@ -40,7 +41,7 @@
             </div>
             <button @click="deleteThread(index)" class="text-red-500 hover:text-red-700 bg-red-100 px-2 py-1 rounded delete-button">Delete</button>
           </div>
-          <p class="mt-2">{{ thread.content }}</p>
+          <p class="mt-2 break-words">{{ thread.content }}</p>
         </div>
       </div>
     </div>
@@ -57,12 +58,13 @@ export default {
         content: ''
       },
       threads: [],
-      errorMessage: ''
+      errorMessage: '',
+      maxCharacters: 1000
     }
   },
   computed: {
     remainingCharacters() {
-      return this.maxCharacters - this.threadContent.length;
+      return this.maxCharacters - this.newThread.content.length;
     },
   },
   methods: {
@@ -104,5 +106,8 @@ button {
 }
 textarea {
   resize: none; 
+}
+.break-words {
+  word-break: break-word; 
 }
 </style>
