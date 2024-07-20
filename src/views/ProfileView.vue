@@ -57,18 +57,29 @@
     </div>
 
     <div class="w-full h-full bg-gray-100">
-      This is a profile page
+      <div id="profile-head" class="col-md-11 card flex flex-row my-10 mx-auto px-8 py-4">
+        <div id="profile-img" class="flex">
+          <img src="/src/assets/blank-profile.png" class="h-28">
+        </div>
+        <div id="profile-info" class="flex flex-col my-auto mx-4">
+          <span id="profile-name" class="text-3xl font-semibold">Profile Name</span>
+          <span id="account-type" class="text-xl">Account Type</span>
+        </div>
+      </div>
+      <div id="profile-body" class="col-md-11 card flex flex-row my-10 mx-auto px-8 py-4">
+        My Classes
+      </div>
     </div>
     </div>
 </template>
 
-    <style>
-    @media (min-width: 1024px) {
-    .about {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-    }
-    }
-    </style>
+<style>
+@media (min-width: 1024px) {
+.about {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+}
+</style>
   
