@@ -28,6 +28,7 @@
               <button type="submit" class="btn btn-success">Register</button>
             </div>
           </form>
+          <div v-if="errorMessage" class="text-danger mt-2">{{ errorMessage }}</div>
         </div>
         <div class="card-footer text-muted text-center">
           Already have an account? <button class="btn btn-link p-0" @click="redirectToLogin">Login here</button>
@@ -36,7 +37,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import axios from 'axios';
 
@@ -47,13 +47,14 @@ export default {
       name: '',
       email: '',
       password: '',
-      role: 'student'
+      role: 'student',
+      errorMessage: ''
     }
   },
   methods: {
     async register() {
       if (!this.validateEmail(this.email)) {
-        alert('Please enter a valid DLSU email address.');
+        this.errorMessage = 'Please enter a valid DLSU email address.';
         return;
       }
       try {
@@ -64,9 +65,10 @@ export default {
           role: this.role
         });
         console.log('Registration successful:', response.data);
+        this.errorMessage = '';
       } catch (error) {
         console.error('Registration failed:', error.response.data);
-        alert(error.response.data.message);
+        this.errorMessage = error.response.data.message || 'An error occurred during registration.';
       }
     },
     redirectToLogin() {
@@ -79,8 +81,10 @@ export default {
   }
 }
 </script>
-
 <style scoped>
+.text-danger {
+  color: #dc3545;
+}
 .container::before {
   content: '';
   position: absolute;

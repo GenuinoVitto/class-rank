@@ -2,7 +2,6 @@
   <div class="w-screen h-screen flex">
     <div class="w-[400px] h-full bg-gray-200 px-3 py-4 overflow-y-auto">
       <ul class="space-y-2 font-medium">
-        <image src=""></image>
         <li>
           <RouterLink to="/" href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="30" viewBox="0 0 50 50">
@@ -28,6 +27,7 @@
         <input v-model="newThread.name" type="text" placeholder="Name" class="block w-full mb-2 p-2 border rounded">
         <textarea v-model="newThread.content" placeholder="Content" class="block w-full mb-2 p-2 border rounded"></textarea>
         <button @click="addThread" class="bg-blue-500 text-white px-4 py-2 rounded add-thread-button">Add Thread</button>
+        <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
       </div>
       <div class="space-y-4">
         <div v-for="(thread, index) in threads" :key="index" class="bg-white p-4 rounded shadow">
@@ -55,7 +55,8 @@ export default {
         name: '',
         content: ''
       },
-      threads: []
+      threads: [],
+      errorMessage: ''
     }
   },
   methods: {
@@ -65,8 +66,9 @@ export default {
         this.newThread.name = '';
         this.newThread.content = '';
         this.showCreateForm = false;
+        this.errorMessage = '';
       } else {
-        alert('Please fill in all fields');
+        this.errorMessage = 'Please fill in all fields';
       }
     },
     deleteThread(index) {
