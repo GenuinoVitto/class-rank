@@ -1,6 +1,6 @@
 <template>
   <div class="w-screen h-screen flex">
-    <div class="w-[300px] h-full bg-gray-200 px-3 py-4 overflow-y-auto">
+    <div class="w-[250px] h-full bg-gray-200 px-3 py-4 overflow-y-auto">
       <ul class="space-y-2 font-medium">
         <li>
           <RouterLink to="/" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
