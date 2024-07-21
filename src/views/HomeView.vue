@@ -1,31 +1,147 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
+const username = ref(''); // should be dynamically fetched based on logged-in user
+
+onMounted(async () => {
+  // Fetch username or other user data here
+});
 </script>
-
 <template>
-  <div class="w-screen h-screen flex">
-    <div class="w-[400px] h-full bg-gray-200 px-3 py-4 overflow-y-auto">
-          <ul class="space-y-2 font-medium">
-            <image src=""></image>
-            <li>
-                <RouterLink to="/" href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="30" viewBox="0 0 50 50">
-                    <path d="M 24.960938 2.1015625 A 1.0001 1.0001 0 0 0 24.386719 2.3105469 L 1.3867188 20.210938 A 1.0001 1.0001 0 1 0 2.6132812 21.789062 L 4 20.708984 L 4 48 A 1.0001 1.0001 0 0 0 5 49 L 18.832031 49 A 1.0001 1.0001 0 0 0 19.158203 49 L 30.832031 49 A 1.0001 1.0001 0 0 0 31.158203 49 L 45 49 A 1.0001 1.0001 0 0 0 46 48 L 46 20.708984 L 47.386719 21.789062 A 1.0001 1.0001 0 1 0 48.613281 20.210938 L 25.613281 2.3105469 A 1.0001 1.0001 0 0 0 24.960938 2.1015625 z M 25 4.3671875 L 44 19.154297 L 44 47 L 32 47 L 32 29 A 1.0001 1.0001 0 0 0 31 28 L 19 28 A 1.0001 1.0001 0 0 0 18 29 L 18 47 L 6 47 L 6 19.154297 L 25 4.3671875 z M 20 30 L 30 30 L 30 47 L 20 47 L 20 30 z"></path>
-                  </svg>
-                  <span class="ms-3">Home</span>
-                </RouterLink>
-            </li>
-            <li>
-                <RouterLink to="/threads" href="#" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                      <svg id="Layer_1" x="0px" y="0px" width="20" height="30" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 96.44"><title>open-book</title><path d="M12,73.51q.2-34.74.39-69.38A3.21,3.21,0,0,1,15,1h0C23.4-.75,36.64-.31,45.63,3.14a35.46,35.46,0,0,1,16,11.65,37.34,37.34,0,0,1,16-11.15C86.12.4,99-.38,108.23,1A3.2,3.2,0,0,1,111,4.14h0V73.8A3.21,3.21,0,0,1,107.77,77a3.49,3.49,0,0,1-.74-.09A53.45,53.45,0,0,0,83.58,79.1a71,71,0,0,0-15.77,8.26,69.09,69.09,0,0,1,21.24-3.1,125.42,125.42,0,0,1,27.41,3.48V14.84h3.21a3.21,3.21,0,0,1,3.21,3.21V91.94a3.21,3.21,0,0,1-3.21,3.21,3.18,3.18,0,0,1-1-.17A121.77,121.77,0,0,0,89,90.65a61.89,61.89,0,0,0-25.76,5.26,3.39,3.39,0,0,1-3.64,0,61.86,61.86,0,0,0-25.76-5.26A121.77,121.77,0,0,0,4.24,95a3.18,3.18,0,0,1-1,.17A3.21,3.21,0,0,1,0,91.94V18.05a3.21,3.21,0,0,1,3.21-3.21H6.42v72.9a125.42,125.42,0,0,1,27.41-3.48,68.84,68.84,0,0,1,22.71,3.57A48.7,48.7,0,0,0,41,79.39c-7-2.3-17.68-3.07-25.49-2.4A3.21,3.21,0,0,1,12,74.06a5,5,0,0,1,0-.55ZM73.64,64.4a2.3,2.3,0,1,1-2.5-3.85,51.46,51.46,0,0,1,11.8-5.4,53.73,53.73,0,0,1,13-2.67,2.29,2.29,0,1,1,.25,4.58,49.42,49.42,0,0,0-11.79,2.46A46.73,46.73,0,0,0,73.64,64.4Zm.2-17.76a2.29,2.29,0,0,1-2.46-3.87,52.71,52.71,0,0,1,11.74-5.3A54.12,54.12,0,0,1,95.9,34.85a2.3,2.3,0,0,1,.25,4.59,49.3,49.3,0,0,0-11.63,2.4,48,48,0,0,0-10.68,4.8Zm.06-17.7a2.3,2.3,0,1,1-2.46-3.89,52.54,52.54,0,0,1,11.72-5.27,53.71,53.71,0,0,1,12.74-2.6,2.29,2.29,0,1,1,.25,4.58,49.35,49.35,0,0,0-11.59,2.39A47.91,47.91,0,0,0,73.9,28.94ZM51.74,60.55a2.3,2.3,0,1,1-2.5,3.85,46.73,46.73,0,0,0-10.72-4.88,49.42,49.42,0,0,0-11.79-2.46A2.29,2.29,0,1,1,27,52.48a53.73,53.73,0,0,1,13,2.67,51.46,51.46,0,0,1,11.8,5.4ZM51.5,42.77A2.29,2.29,0,0,1,49,46.64a48,48,0,0,0-10.68-4.8,49.3,49.3,0,0,0-11.63-2.4A2.3,2.3,0,0,1,27,34.85a54.12,54.12,0,0,1,12.78,2.62,52.71,52.71,0,0,1,11.74,5.3Zm-.06-17.72A2.3,2.3,0,1,1,49,28.94a47.91,47.91,0,0,0-10.66-4.79,49.35,49.35,0,0,0-11.59-2.39A2.29,2.29,0,1,1,27,17.18a53.71,53.71,0,0,1,12.74,2.6,52.54,52.54,0,0,1,11.72,5.27ZM104.56,7c-7.42-.7-18.06.12-24.73,2.65A30,30,0,0,0,64.7,21.46V81.72a76.76,76.76,0,0,1,16.72-8.66,62.85,62.85,0,0,1,23.14-2.87V7ZM58.28,81.1V21.37c-3.36-5.93-8.79-9.89-14.93-12.24-7-2.67-17.75-3.27-24.56-2.3l-.36,63.56c7.43-.27,17.69.68,24.52,2.91a54.94,54.94,0,0,1,15.33,7.8Z"/></svg>
-                      <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Threads</span>
-                </RouterLink>
-            </li>
-          </ul>
-    </div>
+  <div class="w-screen h-screen flex flex-col items-center justify-center bg-gradient-to-r from-green-200 to-blue-200 text-gray-700 overflow-hidden">
+    <div class="w-full max-w-6xl p-6 bg-white rounded-lg shadow-lg">
+      <h1 class="text-4xl font-bold text-center mb-6">Welcome to ClassRank, {{ username }}!</h1>
+      
+      <div class="flex flex-col md:flex-row gap-6 mb-8">
+        
+        <div class="flex-1 md:w-2/3 lg:w-1/3 flex flex-col items-center bg-blue-100 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+          <h2 class="text-2xl font-semibold mb-2">Call to Action</h2>
+          <p class="text-center">Have you taken a new class? Share your experiences!</p>
+        </div>
+        
+        <div class="flex-1 md:w-2/3 lg:w-1/3 flex flex-col items-center bg-yellow-100 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+          <h2 class="text-2xl font-semibold mb-2">About the Platform</h2>
+          <p class="text-center">Helping Lasallians succeed by sharing firsthand class experiences.</p>
+        </div>
+        
+        <div class="flex-1 md:w-2/3 lg:w-1/3 flex flex-col items-center bg-purple-100 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+          <h2 class="text-2xl font-semibold mb-2">How It Works</h2>
+          <p class="text-center">Register, find classes, share reviews!</p>
+        </div>
 
-    <div class="w-full h-full bg-gray-100">
-      This is a home page
+        <div class="flex-1 md:w-2/3 lg:w-1/3 flex flex-col items-center bg-pink-100 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+          <h2 class="text-2xl font-semibold mb-2">Latest Reviews</h2>
+          <p class="text-center">Stay updated with the most recent class reviews from fellow students.</p>
+        </div>
+
+      </div>
+      
+      <div class="text-center">
+        <router-link to="/threads" class="bg-green-500 text-white px-6 py-3 rounded-lg transition-transform transform hover:scale-105 no-underline">Start Sharing</router-link>
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.bg-gradient-to-r {
+  background: linear-gradient(to right, #e0f2f1, #f1f8e9); /* Subtle pastel gradient */
+}
+
+.flex {
+  display: flex;
+}
+.items-center {
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.text-gray-700 {
+  color: #4a4a4a;
+}
+.p-6 {
+  padding: 1.5rem;
+}
+.bg-white {
+  background-color: white;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+.text-4xl {
+  font-size: 2.25rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.text-center {
+  text-align: center;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.text-2xl {
+  font-size: 1.3rem;
+}
+.mb-8 {
+  margin-bottom: 2rem;
+}
+.flex-col {
+  flex-direction: column;
+}
+.md\:flex-row {
+  flex-direction: row;
+}
+.gap-6 {
+  gap: 1.5rem;
+}
+.bg-blue-100 {
+  background-color: #ebf8ff;
+}
+.bg-yellow-100 {
+  background-color: #fffbea;
+}
+.bg-purple-100 {
+  background-color: #faf5ff;
+}
+.bg-pink-100 {
+  background-color: #ffe4e6;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.transition-transform {
+  transition: transform 0.3s;
+}
+.transform {
+  transform: scale(1);
+}
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+.bg-green-500 {
+  background-color: #48bb78;
+}
+.text-white {
+  color: white;
+}
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.no-underline {
+  text-decoration: none;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+</style>
