@@ -13,9 +13,11 @@
             </div>
             <div class="d-grid gap-2">
               <button type="submit" class="btn btn-success">Log in</button>
+              <div v-if="successMessage" class="text-success mt-2">{{ successMessage }}</div>
               <button type="button" class="btn btn-outline-success" @click="signUp">Sign up</button>
             </div>
           </form>
+          <div v-if="errorMessage" class="text-danger mt-2">{{ errorMessage }}</div>
         </div>
         <div class="card-footer text-muted text-center">
           Forget password?
@@ -27,14 +29,15 @@
 
 <script>
 import axios from 'axios';
-import loginBg from '@/assets/login-bg.png';
 
 export default {
   name: 'LoginView',
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      errorMessage: '',
+      successMessage: ''  // Add this line
     }
   },
   methods: {
@@ -44,9 +47,20 @@ export default {
           email: this.email,
           password: this.password
         });
-        console.log('Login successful:', response.data);
+        if (response.data.success) {
+          this.successMessage = 'Logging you in...'; 
+          this.errorMessage = '';
+          setTimeout(() => {
+            this.$router.push('/home');  // redirect after a delay
+          }, 2000);  
+        } else {
+          this.errorMessage = response.data.message;
+          this.successMessage = '';  
+        }
       } catch (error) {
         console.error('Login failed:', error);
+        this.errorMessage = 'Login failed, please try again.';
+        this.successMessage = '';  // Clear success message on error
       }
     },
     signUp() {
@@ -69,5 +83,7 @@ export default {
   filter: blur(10px); /* blurred effect to the background image only */
   z-index: -1;
 }
-
+.text-danger {
+  color: #dc3545;
+}
 </style>

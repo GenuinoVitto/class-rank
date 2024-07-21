@@ -7,19 +7,15 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 5000; 
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json());  
 
 // MongoDB connection
-const uri = process.env.MONGO_URI;
-mongoose.connect(uri);
-
-const connection = mongoose.connection;
-connection.once('open', () => {
-  console.log('MongoDB database connection established successfully');
-});
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB database connection established successfully'))
+  .catch(err => console.log('MongoDB connection error:', err));
 
 // Define User schema and model
 const userSchema = new mongoose.Schema({
@@ -31,19 +27,35 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema, 'users');
 
-// Routes
+// Registration route
 app.post('/register', async (req, res) => {
   const { name, email, password, role } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ name, email, password: hashedPassword, role });
     await newUser.save();
+    res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    let message = 'Error registering user';
-    if (error.code === 11000) { // Duplicate key error
-      message = 'Email already registered';
+    if (error.code === 11000) {
+      res.status(400).json({ message: 'Email already registered' });
+    } else {
+      res.status(500).json({ message: 'Error registering user', error: error.message });
     }
-    res.status(400).send({ message, error });
+  }
+});
+
+// Login route
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (user && await bcrypt.compare(password, user.password)) {
+      res.json({ success: true, message: 'Login successful' });
+    } else {
+      res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
   }
 });
 

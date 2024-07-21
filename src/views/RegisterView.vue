@@ -68,15 +68,14 @@ export default {
           password: this.password,
           role: this.role
         });
-        this.successMessage = 'Registration successful!'; // Set success message
-        this.errorMessage = ''; // Clear any previous error messages
+        this.successMessage = 'Registration successful!'; // success message
+        this.errorMessage = ''; 
       } catch (error) {
         console.error('Registration failed:', error.response.data);
         this.errorMessage = error.response.data.message || 'An error occurred during registration.';
-        this.successMessage = ''; // Clear success message if there's an error
+        this.successMessage = ''; 
       }
     },
-
     redirectToLogin() {
       this.$router.push('/login');
     },
