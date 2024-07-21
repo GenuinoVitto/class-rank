@@ -1,17 +1,7 @@
-<script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-
-const username = ref(''); // should be dynamically fetched based on logged-in user
-
-onMounted(async () => {
-  // Fetch username or other user data here
-});
-</script>
 <template>
   <div class="w-screen h-screen flex flex-col items-center justify-center bg-gradient-to-r from-green-200 to-blue-200 text-gray-700 overflow-hidden">
     <div class="w-full max-w-6xl p-6 bg-white rounded-lg shadow-lg">
-      <h1 class="text-4xl font-bold text-center mb-6">Welcome to ClassRank, {{ username }}!</h1>
+      <h1 class="text-4xl font-bold text-center mb-6">Welcome to ClassRank!</h1>
       
       <div class="flex flex-col md:flex-row gap-6 mb-8">
         

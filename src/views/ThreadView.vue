@@ -71,6 +71,7 @@ export default {
     addThread() {
       if (this.newThread.name && this.newThread.content) {
         this.threads.unshift({ ...this.newThread, time: new Date().toISOString() });
+        localStorage.setItem('threads', JSON.stringify(this.threads));
         this.newThread.name = '';
         this.newThread.content = '';
         this.showCreateForm = false;
@@ -81,11 +82,21 @@ export default {
     },
     deleteThread(index) {
       this.threads.splice(index, 1);
+      localStorage.setItem('threads', JSON.stringify(this.threads));
     },
     formatTime(time) {
       const date = new Date(time);
       return date.toLocaleString();
+    },
+    loadThreads() {
+      const storedThreads = localStorage.getItem('threads');
+      if (storedThreads) {
+        this.threads = JSON.parse(storedThreads);
+      }
     }
+  },
+  mounted() {
+    this.loadThreads();
   }
 }
 </script>
