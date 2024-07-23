@@ -22,14 +22,19 @@
     <div class="flex-1 h-full bg-gray-100 p-8 overflow-y-auto">
       <div class="flex justify-between items-center mb-4">
         <h1 class="text-xl font-bold">Active Threads</h1>
-        <button @click="showCreateForm = !showCreateForm" class="bg-green-500 text-white px-4 py-2 rounded create-button">Create</button>
+        <button @click="toggleCreateForm" class="bg-green-500 text-white px-4 py-2 rounded create-button">Create</button>
       </div>
       <div v-if="showCreateForm" class="bg-white p-4 rounded shadow mb-4">
-        <input v-model="newThread.name" type="text" placeholder="Name" class="block w-full mb-2 p-2 border rounded">
-        <textarea v-model="newThread.content" placeholder="Content" class="block w-full mb-2 p-2 border rounded" maxlength="1000" style="resize: none;"></textarea>
+        <input v-model="newThread.name" type="text" placeholder="Class Name" class="block w-full mb-2 p-2 border rounded">
+        <input v-model="newThread.code" type="text" placeholder="Class Code" class="block w-full mb-2 p-2 border rounded">
+        <textarea v-model="newThread.description" placeholder="Description" class="block w-full mb-2 p-2 border rounded" maxlength="1000" style="resize: none;"></textarea>
         <p class="text-right text-gray-500">{{ remainingCharacters }} characters left</p>
-        <button @click="addThread" class="bg-blue-500 text-white px-4 py-2 rounded add-thread-button">Add Class</button>
+        <div class="flex space-x-4">
+          <button @click="addThread" class="bg-blue-500 text-white px-4 py-2 rounded add-thread-button">Add Class</button>
+          <button @click="cancelEdit" class="bg-red-500 text-white px-4 py-2 rounded cancel-button" v-if="isEditing">Cancel</button>
+        </div>
         <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
+        <p v-if="successMessage" class="text-green-500">{{ successMessage }}</p>
       </div>
       <div class="space-y-4">
         <div v-for="(thread, index) in threads" :key="index" class="bg-white p-4 rounded shadow">
@@ -37,11 +42,13 @@
             <img src="https://via.placeholder.com/50" alt="Profile Picture" class="w-10 h-10 rounded-full">
             <div class="flex-1">
               <h2 class="font-semibold">{{ thread.name }}</h2>
-              <p class="text-gray-500">{{ formatTime(thread.time) }}</p>
+              <p class="text-gray-500">{{ thread.code }}</p>
+              <p class="text-gray-400 text-sm">{{ formatTime(thread.time) }}</p>
             </div>
+            <button @click="editThread(index)" class="text-yellow-500 hover:text-yellow-700 bg-yellow-100 px-2 py-1 rounded edit-button">Edit</button>
             <button @click="deleteThread(index)" class="text-red-500 hover:text-red-700 bg-red-100 px-2 py-1 rounded delete-button">Delete</button>
           </div>
-          <p class="mt-2 break-words">{{ thread.content }}</p>
+          <p class="mt-2 break-words">{{ thread.description }}</p>
         </div>
       </div>
     </div>
@@ -55,34 +62,86 @@ export default {
       showCreateForm: false,
       newThread: {
         name: '',
-        content: ''
+        code: '',
+        description: ''
       },
       threads: [],
       errorMessage: '',
-      maxCharacters: 1000
+      successMessage: '',
+      maxCharacters: 1000,
+      editIndex: null,
+      isEditing: false,
+      originalThread: {}
     }
   },
   computed: {
     remainingCharacters() {
-      return this.maxCharacters - this.newThread.content.length;
+      return this.maxCharacters - this.newThread.description.length;
     },
   },
   methods: {
+    toggleCreateForm() {
+      this.showCreateForm = !this.showCreateForm;
+      this.errorMessage = '';
+      this.successMessage = '';
+      this.resetForm();
+    },
     addThread() {
-      if (this.newThread.name && this.newThread.content) {
-        this.threads.unshift({ ...this.newThread, time: new Date().toISOString() });
-        localStorage.setItem('threads', JSON.stringify(this.threads));
-        this.newThread.name = '';
-        this.newThread.content = '';
-        this.showCreateForm = false;
-        this.errorMessage = '';
-      } else {
-        this.errorMessage = 'Please fill in all fields';
+      this.errorMessage = '';
+      this.successMessage = '';
+
+      if (!this.newThread.name && !this.newThread.description) {
+        this.errorMessage = 'Class name and description are required';
+        return;
       }
+      if (!this.newThread.name) {
+        this.errorMessage = 'Class name is required';
+        return;
+      }
+      if (!this.newThread.description) {
+        this.errorMessage = 'Description is required';
+        return;
+      }
+
+      if (this.isEditing) {
+        if (JSON.stringify(this.newThread) === JSON.stringify(this.originalThread)) {
+          this.errorMessage = 'No changes made';
+          return;
+        }
+        this.threads.splice(this.editIndex, 1, { ...this.newThread, time: new Date().toISOString() });
+        this.isEditing = false;
+        this.editIndex = null;
+        this.successMessage = 'Class updated successfully';
+      } else {
+        this.threads.unshift({ ...this.newThread, time: new Date().toISOString() });
+        this.successMessage = 'Class added successfully';
+      }
+
+      setTimeout(() => {
+        localStorage.setItem('threads', JSON.stringify(this.threads));
+        this.resetForm();
+        this.showCreateForm = false;
+      }, 500); // Short delay before updating the page
+
+      setTimeout(() => {
+        this.successMessage = '';
+      }, 3000);
     },
     deleteThread(index) {
       this.threads.splice(index, 1);
       localStorage.setItem('threads', JSON.stringify(this.threads));
+    },
+    editThread(index) {
+      this.newThread = { ...this.threads[index] };
+      this.originalThread = { ...this.threads[index] };
+      this.showCreateForm = true;
+      this.editIndex = index;
+      this.isEditing = true;
+    },
+    cancelEdit() {
+      this.resetForm();
+      this.showCreateForm = false;
+      this.isEditing = false;
     },
     formatTime(time) {
       const date = new Date(time);
@@ -93,6 +152,13 @@ export default {
       if (storedThreads) {
         this.threads = JSON.parse(storedThreads);
       }
+    },
+    resetForm() {
+      this.newThread.name = '';
+      this.newThread.code = '';
+      this.newThread.description = '';
+      this.errorMessage = '';
+      this.successMessage = '';
     }
   },
   mounted() {
@@ -102,7 +168,6 @@ export default {
 </script>
 
 <style scoped>
-/* Improve the CSS styling if necessary */
 button {
   transition: background-color 0.3s;
 }
@@ -112,13 +177,29 @@ button {
 .add-thread-button:hover {
   background-color: #3b5998; 
 }
+.cancel-button:hover {
+  background-color: #cc0000; 
+}
 .delete-button:hover {
   background-color: #ff1a1a; 
+}
+.edit-button:hover {
+  background-color: #ffd700;
 }
 textarea {
   resize: none; 
 }
 .break-words {
   word-break: break-word; 
+}
+.font-semibold {
+  margin-bottom: 1px;
+}
+.text-gray-500 {
+  margin-bottom: 1px;
+  font-size: 1.3rem;
+}
+.text-gray-400 {
+  font-size: 0.8rem;
 }
 </style>
