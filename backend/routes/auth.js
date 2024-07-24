@@ -1,34 +1,10 @@
 import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
 import bcrypt from 'bcrypt';
-import dotenv from 'dotenv';
+import User from '../models/user.js';
 
-dotenv.config();
+const router = express.Router();
 
-const app = express();
-const port = process.env.PORT || 5000; 
-
-app.use(cors());
-app.use(express.json());  
-
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB database connection established successfully'))
-  .catch(err => console.log('MongoDB connection error:', err));
-
-// Define User schema and model
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, required: true }
-});
-
-const User = mongoose.model('User', userSchema, 'users');
-
-// Registration route
-app.post('/register', async (req, res) => {
+router.post('/register', async (req, res) => {
   const { name, email, password, role } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -44,8 +20,7 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// Login route
-app.post('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -59,6 +34,4 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
-});
+export default router;

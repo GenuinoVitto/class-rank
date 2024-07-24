@@ -53,6 +53,3 @@ npm run test:e2e
 # Making Pages
 go under /src/views/ and add pages
 * NOTE: may have to adjust "router"
-
-# Sprint Board
-https://www.notion.so/invite/31d5a48e738bf35537eda47655b5720f4c51fa25
