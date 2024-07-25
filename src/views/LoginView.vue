@@ -3,7 +3,7 @@
     <div class="col-md-6">
       <div class="card shadow">
         <div class="card-body">
-          <h5 class="card-title text-center">Welcome to ClassRank</h5>
+          <h5 class="card-title text-center">Welcome to Class Rank!</h5>
           <form @submit.prevent="login">
             <div class="mb-3">
               <input type="email" class="form-control" placeholder="DLSU Email" id="email" v-model="email" required>
@@ -20,7 +20,7 @@
           <div v-if="errorMessage" class="text-danger mt-2">{{ errorMessage }}</div>
         </div>
         <div class="card-footer text-muted text-center">
-          Forget password?
+          Forgot password?
         </div>
       </div>
     </div>

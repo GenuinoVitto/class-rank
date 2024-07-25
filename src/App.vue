@@ -38,14 +38,15 @@ onMounted(() => {
   <!-- NAVBAR -->
   <nav class="bg-white border-b border-gray-200 dark:bg-gray-900 sticky top-0 z-50 h-16">
     <div class="max-w-screen-xl flex items-center justify-between mx-auto h-full px-4">
-      <a href="/Threads" class="flex items-center space-x-3 rtl:space-x-reverse">
+      <a href="/Threads" class="flex items-center space-x-2  rtl:space-x-reverse no-underline">
         <img src="/src/assets/logo-img.png" class="h-10" alt="ClassRank Logo" />
-        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white logo-text">classrank</span>
+        <span class="text-green-800 text-2xl font-semibold whitespace-nowrap dark:text-white logo-text">classrank</span>
       </a>
 
       <div class="flex-grow flex justify-center md:order-2">
         <div class="relative w-full max-w-md">
           <input 
+            v-model="searchQuery"
             type="text" 
             id="search-navbar" 
             class="block w-full p-2 pr-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-center" 
@@ -131,6 +132,20 @@ onMounted(() => {
   <RouterView />
 </template>
 
+<script>
+import ThreadView from './views/ThreadView.vue';
+export default {
+  components: {
+    ThreadView
+  },
+  data() {
+    return {
+      searchQuery: ''
+    };
+  }
+}
+</script>
+
 <style scoped>
 nav {
   height: 4rem;
@@ -164,6 +179,6 @@ button:focus {
 }
 
 #user-dropdown {
-  min-width: 12rem; /* Adjust as necessary */
+  min-width: 12rem; 
 }
 </style>
