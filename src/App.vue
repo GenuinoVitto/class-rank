@@ -12,13 +12,15 @@ const toggleDropdown = ref(false)
 const signOut = async () => {
   try {
     // Assuming you are using JWT and you need to invalidate the token on the server
-    await axios.post('http://localhost:5173/signout', {}, { withCredentials: true })
-    
+    console.log("logout");
     // Clear user data from localStorage or any other storage
     localStorage.removeItem('user')
 
     // Redirect to login or home page
-    router.push('/login')
+    setTimeout(() => {
+        alert("Logging Out...");
+        router.push('/login') // Redirect to login page
+    }, 1000); // 2000 milliseconds = 2 seconds
   } catch (error) {
     console.error('Error signing out:', error)
   }
@@ -89,10 +91,10 @@ onMounted(() => {
             <span class="block text-sm text-gray-500 truncate dark:text-gray-400">classrank.com</span>
           </div>
           <ul class="py-2" aria-labelledby="user-menu-button">
-            <li>
-              <a href="/Threads" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</a>
+            <li class="hover:bg-gray-100 dark:hover:bg-gray-600">
+              <a href="/Threads" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white no-underline">Dashboard</a>
             </li>
-            <li>
+            <li class="hover:bg-gray-100 dark:hover:bg-gray-600">
               <button @click="signOut" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</button>
             </li>
           </ul>
