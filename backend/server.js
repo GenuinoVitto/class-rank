@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
+const router = express.Router();
 const app = express();
 const port = process.env.PORT || 5000; 
 const uri = process.env.MONGO_URI;
@@ -57,6 +57,12 @@ app.post('/login', async (req, res) => {
   } catch (error) {
     res.status(500).json({ success: false, message: 'Server error', error: error.message });
   }
+});
+
+router.post('/signout', (req, res) => {
+  // Clear the user's session or token
+  res.clearCookie('token'); // If using cookies to store the token
+  res.json({ message: 'Signed out successfully' });
 });
 
 app.listen(port, () => {
