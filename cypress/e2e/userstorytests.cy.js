@@ -2,9 +2,18 @@ describe('User Login, Navigation, Thread Creation, Editing, and Deletion', () =>
   it('should log in, click "Start Sharing", navigate to the Threads page, create a thread, edit it, and then delete it', () => {
     // Visit the login page
     cy.visit('/')
+    // register USER STORY #1
+    cy.get('.btn-outline-success').click()
+    cy.get('#name').type('Test1')
+    cy.get('#email').type('test1@dlsu.edu.ph')
+    cy.get('#password').type('12345678')
+    cy.get('.d-grid > .btn').click()
+    cy.wait(2000)
+    cy.get('.card-footer > .btn').click()
+    cy.wait(2000)
 
     // Log in
-    cy.get('#email').type('kendrick_chan@dlsu.edu.ph')
+    cy.get('#email').type('test@dlsu.edu.ph')
     cy.get('#password').type('12345678')
     cy.get('.btn-success').click()
 
@@ -17,6 +26,7 @@ describe('User Login, Navigation, Thread Creation, Editing, and Deletion', () =>
     // Verify that we are redirected to the Threads page
     cy.url().should('include', '/threads')
 
+    // creation of threads start USER STORY #2
     // Verify that the "Create Thread" button is visible and click it
     cy.get('.bg-green-500').should('be.visible').click()
 
@@ -62,13 +72,14 @@ describe('User Login, Navigation, Thread Creation, Editing, and Deletion', () =>
     // Verify that the new thread has been created
     cy.contains('Programming Fundamentals 3').should('be.visible')
 
-    // creation of threads
+    // creation of threads end USER STORY #2
     //------------------------------------------------------------------------------------------------------------------
     // search for Programming 1 dont work
     cy.get('.flex-grow > .relative > #search-navbar').click().type('Programming Fundamentals 1')
     cy.get('.flex-grow > .relative > #search-navbar').type('{enter}')
     cy.wait(2000)
 
+    // User Story #5 Start
     // Edit the thread to add a description
     cy.get('.text-yellow-500').first().click() // Assuming the first edit button corresponds to the created thread
     cy.get('textarea').clear().type('This class is hard')
@@ -83,5 +94,6 @@ describe('User Login, Navigation, Thread Creation, Editing, and Deletion', () =>
 
     // Verify that the thread has been deleted
     cy.contains('Programming Fundamentals 3').should('not.exist')
+    // User Story #5 End
   })
 })
