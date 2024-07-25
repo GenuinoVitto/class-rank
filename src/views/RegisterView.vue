@@ -69,7 +69,11 @@ export default {
           role: this.role
         });
         this.successMessage = 'Registration successful!'; // success message
-        this.errorMessage = ''; 
+        this.errorMessage = '';
+        // Set a delay before redirecting
+        setTimeout(() => {
+          this.redirectToLogin(); // Redirect to login page
+        }, 2000); // 2000 milliseconds = 2 seconds
       } catch (error) {
         console.error('Registration failed:', error.response.data);
         this.errorMessage = error.response.data.message || 'An error occurred during registration.';
