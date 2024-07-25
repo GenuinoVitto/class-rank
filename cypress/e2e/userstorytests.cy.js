@@ -1,22 +1,25 @@
+// https://on.cypress.io/api
+
 describe('User Login, Navigation, Thread Creation, Editing, and Deletion', () => {
   it('should log in, click "Start Sharing", navigate to the Threads page, create a thread, edit it, and then delete it', () => {
     // Visit the login page
     cy.visit('/')
     // register USER STORY #1
     cy.get('.btn-outline-success').click()
-    cy.get('#name').type('Test1')
-    cy.get('#email').type('test1@dlsu.edu.ph')
+    cy.get('#name').type('Test')
+    cy.get('#email').type('test@dlsu.edu.ph')
     cy.get('#password').type('12345678')
     cy.get('.d-grid > .btn').click()
     cy.wait(2000)
     cy.get('.card-footer > .btn').click()
     cy.wait(2000)
 
+    
     // Log in
     cy.get('#email').type('test@dlsu.edu.ph')
     cy.get('#password').type('12345678')
     cy.get('.btn-success').click()
-
+    cy.wait(2000)
     // Verify that we are on the home page
     cy.url().should('include', '/home')
 
