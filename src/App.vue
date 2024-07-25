@@ -1,15 +1,44 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { RouterLink, RouterView, useRouter } from 'vue-router'
+import axios from 'axios'
 import HomeView from './views/HomeView.vue';
 import HelloWorld from './components/HelloWorld.vue';
 import LoginView from './views/LoginView.vue';
+
+const router = useRouter()
+const toggleDropdown = ref(false)
+
+const signOut = async () => {
+  try {
+    // Assuming you are using JWT and you need to invalidate the token on the server
+    await axios.post('http://localhost:5173/signout', {}, { withCredentials: true })
+    
+    // Clear user data from localStorage or any other storage
+    localStorage.removeItem('user')
+
+    // Redirect to login or home page
+    router.push('/login')
+  } catch (error) {
+    console.error('Error signing out:', error)
+  }
+}
+
+onMounted(() => {
+  const button = document.getElementById('user-menu-button')
+  const dropdown = document.getElementById('user-dropdown')
+  
+  button.addEventListener('click', () => {
+    dropdown.classList.toggle('hidden')
+  })
+})
 </script>
 
 <template>
   <!-- NAVBAR -->
   <nav class="bg-white border-b border-gray-200 dark:bg-gray-900 sticky top-0 z-50 h-16">
     <div class="max-w-screen-xl flex items-center justify-between mx-auto h-full px-4">
-      <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+      <a href="/Threads" class="flex items-center space-x-3 rtl:space-x-reverse">
         <img src="/src/assets/logo-img.png" class="h-10" alt="ClassRank Logo" />
         <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white logo-text">classrank</span>
       </a>
@@ -47,29 +76,23 @@ import LoginView from './views/LoginView.vue';
       </div>
 
       <!-- User -->
-      <div class="flex items-center md:order-3 space-x-3 md:space-x-0 rtl:space-x-reverse">
-        <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+      <div class="flex items-center md:order-3 space-x-3 md:space-x-0 rtl:space-x-reverse relative">
+        <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom" href="views/ProfileView.vue">
           <span class="sr-only">Open user menu</span>
           <img class="w-10 h-10 rounded-full" src="/src/assets/blank-profile.png" alt="user photo">
         </button>
         <!-- Dropdown menu -->
-        <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
+        <div class="absolute translate-y-28 z-50 hidden  text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
           <div class="px-4 py-3">
-            <span class="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
-            <span class="block text-sm text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
+            <span class="block text-sm text-gray-900 dark:text-white">User</span>
+            <span class="block text-sm text-gray-500 truncate dark:text-gray-400">classrank.com</span>
           </div>
           <ul class="py-2" aria-labelledby="user-menu-button">
             <li>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</a>
+              <a href="/Threads" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</a>
             </li>
             <li>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
-            </li>
-            <li>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Earnings</a>
-            </li>
-            <li>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
+              <button @click="signOut" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</button>
             </li>
           </ul>
         </div>
@@ -138,5 +161,9 @@ input:focus {
 button:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4);
+}
+
+#user-dropdown {
+  min-width: 12rem; /* Adjust as necessary */
 }
 </style>
