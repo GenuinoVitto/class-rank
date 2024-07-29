@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 import axios from 'axios'
 import HomeView from './views/HomeView.vue';
-import HelloWorld from './components/HelloWorld.vue';
+import HelloWorld from './components/__tests__/HelloWorld.vue';
 import LoginView from './views/LoginView.vue';
 
 const router = useRouter()
