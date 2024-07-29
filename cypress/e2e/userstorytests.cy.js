@@ -98,5 +98,9 @@ describe('User Login, Navigation, Thread Creation, Editing, and Deletion', () =>
     // Verify that the thread has been deleted
     cy.contains('Programming Fundamentals 3').should('not.exist')
     // User Story #5 End
+
+    //Log out
+    cy.get('#user-menu-button > .w-10').click()
+    cy.get(':nth-child(2) > .block').should('contain.text', 'Sign out').click()
   })
 })
