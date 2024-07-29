@@ -16,8 +16,16 @@ describe('User Login, Navigation, Thread Creation, Editing, and Deletion', () =>
 
     
     // Log in
+
+    //Unsuccessful Log in
     cy.get('#email').type('test@dlsu.edu.ph')
-    cy.get('#password').type('12345678')
+    cy.get('#password').type('00000000')
+    cy.get('.btn-success').click()
+    cy.wait(2000)
+    cy.get('.text-danger').should('contain.text', 'Login failed, please try again.')
+
+    // Successful Log in
+    cy.get('#password').clear().type('12345678')
     cy.get('.btn-success').click()
     cy.wait(2000)
     // Verify that we are on the home page
