@@ -5,25 +5,25 @@
       
       <div class="flex flex-col md:flex-row gap-6 mb-8">
         
-        <div class="flex-1 md:w-2/3 lg:w-1/3 flex flex-col items-center bg-blue-100 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+        <a href="" class="text-gray-700 no-underline flex-1 md:w-2/3 lg:w-1/3 flex flex-col items-center bg-blue-100 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
           <h2 class="text-2xl font-semibold mb-2">Call to Action</h2>
           <p class="text-center">Have you taken a new class? Share your experiences!</p>
-        </div>
+        </a>
         
-        <div class="flex-1 md:w-2/3 lg:w-1/3 flex flex-col items-center bg-yellow-100 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+        <a href="" class="text-gray-700 no-underline flex-1 md:w-2/3 lg:w-1/3 flex flex-col items-center bg-yellow-100 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
           <h2 class="text-2xl font-semibold mb-2">About the Platform</h2>
           <p class="text-center">Helping Lasallians succeed by sharing firsthand class experiences.</p>
-        </div>
+        </a>
         
-        <div class="flex-1 md:w-2/3 lg:w-1/3 flex flex-col items-center bg-purple-100 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+        <a href="" class="text-gray-700 no-underline flex-1 md:w-2/3 lg:w-1/3 flex flex-col items-center bg-purple-100 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
           <h2 class="text-2xl font-semibold mb-2">How It Works</h2>
           <p class="text-center">Register, find classes, share reviews!</p>
-        </div>
+        </a>
 
-        <div class="flex-1 md:w-2/3 lg:w-1/3 flex flex-col items-center bg-pink-100 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+        <a href="" class="text-gray-700 no-underline flex-1 md:w-2/3 lg:w-1/3 flex flex-col items-center bg-pink-100 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
           <h2 class="text-2xl font-semibold mb-2">Latest Reviews</h2>
           <p class="text-center">Stay updated with the most recent class reviews from fellow students.</p>
-        </div>
+        </a>
 
       </div>
       

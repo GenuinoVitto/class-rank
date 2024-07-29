@@ -18,7 +18,7 @@ const signOut = async () => {
 
     // Redirect to login or home page
     setTimeout(() => {
-        alert("Logging Out...");
+        alert("Logging Out...")
         router.push('/login') // Redirect to login page
     }, 1000); // 2000 milliseconds = 2 seconds
   } catch (error) {

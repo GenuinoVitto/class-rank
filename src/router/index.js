@@ -28,16 +28,18 @@ const router = createRouter({
     {
       path: '/threads',
       name: 'threads',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/ThreadView.vue')
+    },
+    {
+      path: '/classes',
+      name: 'classes',
+      component: () => import('../views/ClassView.vue')
     },
     {
       path: '/profile',
       name: 'profile',
       component: () => import('../views/ProfileView.vue')
-    }
+    },
   ]
 })
 
