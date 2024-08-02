@@ -27,7 +27,7 @@
   
       <div class="flex-1 h-full bg-gray-100 p-8 overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
-          <h1 class="text-xl font-bold">Active Threads</h1>
+          <h1 class="text-xl font-bold">Active Classes</h1>
           <button @click="toggleCreateForm" class="bg-green-500 text-white px-4 py-2 rounded create-button">Create</button>
         </div>
         <div v-if="showCreateForm" class="bg-white p-4 rounded shadow mb-4">

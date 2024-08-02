@@ -20,7 +20,8 @@
           <div v-if="errorMessage" class="text-danger mt-2">{{ errorMessage }}</div>
         </div>
         <div class="card-footer text-muted text-center">
-          Forgot password?
+          <!-- Forgot password? PREVIOUS -->
+          <button class="btn btn-link p-0" @click="forgotPassword">Forgot password?</button>
         </div>
       </div>
     </div>
@@ -65,6 +66,9 @@ export default {
     },
     signUp() {
       this.$router.push('/register');
+    },
+    forgotPassword() { // 
+      this.$router.push('/forgot-password');
     }
   }
 }

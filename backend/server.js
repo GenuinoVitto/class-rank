@@ -68,3 +68,15 @@ router.post('/signout', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
+
+router.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  try {
+    await sendPasswordResetEmail(email);
+    res.status(200).json({ success: true, message: 'Password reset link sent to your email.' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'An error occurred while sending the reset link.' });
+  }
+});
+
+router.post
