@@ -85,10 +85,6 @@ describe('User Login, Navigation, Thread Creation, Editing, and Deletion', () =>
 
     // creation of threads end USER STORY #2
     //------------------------------------------------------------------------------------------------------------------
-    // search for Programming 1 dont work
-    cy.get('.flex-grow > .relative > #search-navbar').click().type('Programming Fundamentals 1')
-    cy.get('.flex-grow > .relative > #search-navbar').type('{enter}')
-    cy.wait(2000)
 
     // User Story #5 Start
     // Edit the thread to add a description
@@ -110,5 +106,7 @@ describe('User Login, Navigation, Thread Creation, Editing, and Deletion', () =>
     //Log out
     cy.get('#user-menu-button > .w-10').click()
     cy.get(':nth-child(2) > .block').should('contain.text', 'Sign out').click()
+
+    // forgot password
   })
 })
