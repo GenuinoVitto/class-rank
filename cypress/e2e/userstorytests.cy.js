@@ -23,7 +23,7 @@ describe('User Login, Navigation, Thread Creation, Editing, and Deletion', () =>
     cy.wait(2000)
     cy.get('.text-danger').should('contain.text', 'Login failed, please try again.')
 
-    // Forgot Password
+    // forgot password
     cy.get('.card-footer > .btn').click()
     cy.wait(1000)
     cy.get('.form-control').type('test@dlsu.edu.ph')
@@ -108,9 +108,10 @@ describe('User Login, Navigation, Thread Creation, Editing, and Deletion', () =>
     // cy.contains('Programming Fundamentals 3').should('not.exist')
     // // User Story #5 End
 
-    // //Log out
-    // cy.get('#user-menu-button > .w-10').click()
-    // cy.get(':nth-child(2) > .block').should('contain.text', 'Sign out').click()
+    //Log out
+    cy.get('#user-menu-button > .w-10').click()
+    cy.get(':nth-child(2) > .block').should('contain.text', 'Sign out').click()
 
+    // forgot password
   })
 })
