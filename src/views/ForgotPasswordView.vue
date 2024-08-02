@@ -33,15 +33,17 @@
     },
     methods: {
       async sendResetLink() {
+        console.log('Sending reset link to:', this.email);
         try {
-          const response = await axios.post('http://localhost:5000/forgot-password', {
+          const response = await axios.post('http://localhost:5173/forgot-password', {
             email: this.email
           });
+          console.log('Response:', response);
           this.message = response.data.message;
           this.success = response.data.success;
         } catch (error) {
-          console.error('Error sending reset link:', error);
-          this.message = 'An error occurred while sending the reset link.';
+          console.error('Error sending reset link:', error.response || error.message);
+          this.message = error.response?.data?.message || 'An error occurred while sending the reset link.';
           this.success = false;
         }
       }

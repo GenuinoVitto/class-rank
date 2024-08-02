@@ -3,14 +3,15 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
 
 dotenv.config();
-const router = express.Router();
 const app = express();
-const port = process.env.PORT || 5000; 
+const port = process.env.PORT || 5173;
 const uri = process.env.MONGO_URI;
+
 app.use(cors());
-app.use(express.json());  
+app.use(express.json());
 
 // MongoDB connection
 mongoose.connect(uri)
@@ -22,7 +23,8 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, required: true }
+  role: { type: String, required: true },
+  resetToken: { type: String } // Add resetToken to the schema
 });
 
 const User = mongoose.model('User', userSchema, 'users');
@@ -59,17 +61,37 @@ app.post('/login', async (req, res) => {
   }
 });
 
-router.post('/signout', (req, res) => {
-  // Clear the user's session or token
-  res.clearCookie('token'); // If using cookies to store the token
+// Signout route
+app.post('/signout', (req, res) => {
+  res.clearCookie('token');
   res.json({ message: 'Signed out successfully' });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
-});
+// Send password reset email
+const sendPasswordResetEmail = async (email) => {
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
 
-router.post('/forgot-password', async (req, res) => {
+  const resetToken = Math.random().toString(36).substr(2);
+  await User.updateOne({ email }, { resetToken });
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: 'Password Reset',
+    text: `You requested a password reset. Please use the following token to reset your password: ${resetToken}`
+  };
+
+  await transporter.sendMail(mailOptions);
+};
+
+// Forgot password route
+app.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
   try {
     await sendPasswordResetEmail(email);
@@ -79,4 +101,6 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
-router.post
+app.listen(port, () => {
+  console.log(`Server is running on port: ${port}`);
+});
